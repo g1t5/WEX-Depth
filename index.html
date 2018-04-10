@@ -10,17 +10,22 @@
         var $pair = $('#pair');
         var $limit = $('#limit');
         var $loadBtn = $('#reload');
+        var $autoReload = $('#autoreload');
         
                   
         $.ajax({
           url: 'https://wex.nz/api/3/info',
           dataType: 'jsonp',
         }).done(function(data){
-          console.log(data);
           for(var i in data.pairs){
             $pair.append(('<option>'+i+'</option>'))
           }
           $loadBtn.click();
+          setInterval(function(){
+            if($autoReload.prop('checked')){
+              $loadBtn.click();
+            }
+          }, 10000);
         });
         
         $loadBtn.click(function(){
@@ -87,13 +92,15 @@
                     name: 'asks',
                     data: asks,
                     fillColor: '#8888FF',
-                    lineColor: '#3333FF'
+                    lineColor: '#3333FF',
+                    animation: false
                 },{
                     type: 'area',
                     name: 'bids',
                     data: bids,
                     fillColor: '#FF8888',
-                    lineColor: '#FF3333'
+                    lineColor: '#FF3333',
+                    animation: false
                 }]
             });
             $loadBtn.attr('disabled', false)
@@ -113,6 +120,7 @@
         <option>5000</option>
       </select>
       <button id="reload">Load</button>
+      <label><input type="checkbox" id="autoreload"> auto reload</label>
       <a href="https://en.wikipedia.org/wiki/Market_depth" target="_blank">Market depth?</a>
     </div>
     <div id="container" style="height: 92%;"></div>
