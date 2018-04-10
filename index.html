@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script>
+      $(function(){
+        var url = 'https://wex.nz/api/3/depth/btc_usd?limit=5000';
+        $.ajax({
+           url: url,
+           dataType: 'jsonp',
+        }).done(function(data){
+          var asks = [], bids = [];
+          var s = 0;
+          for(var i in data.btc_usd.asks){
+            s+=parseFloat(data.btc_usd.asks[i][1]);
+            asks.push([data.btc_usd.asks[i][0], s]);
+          }
+          s = 0;
+          for(var i in data.btc_usd.bids){
+            s+=parseFloat(data.btc_usd.bids[i][1]);
+            bids.push([data.btc_usd.bids[i][0], s]);
+          }
+          bids.reverse();
+  
+          Highcharts.chart('container', {
+              chart: {zoomType: 'x'},
+              title: {text: 'WEX BTC USD Depth'},
+              subtitle: {text: document.ontouchstart === undefined ?'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'},
+              xAxis: {title: {text: 'USD'}},
+              yAxis: {min: 0, title: {text: 'BTC'}},
+              legend: {enabled: false},
+              plotOptions: {
+                  area: {
+                      fillColor: {
+                          linearGradient: {
+                              x1: 0,
+                              y1: 0,
+                              x2: 0,
+                              y2: 1
+                          },
+                          stops: [
+                              [0, Highcharts.getOptions().colors[0]],
+                              [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                          ]
+                      },
+                      marker: {
+                          radius: 2
+                      },
+                      lineWidth: 1,
+                      states: {
+                          hover: {
+                              lineWidth: 1
+                          }
+                      },
+                      threshold: null
+                  }
+              },
+              series: [{
+                  type: 'area',
+                  name: 'asks',
+                  data: asks
+              },{
+                  type: 'area',
+                  name: 'bids',
+                  data: bids
+              }]
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="container" style="height: 100%;"></div>
+  </body>
+</html>
