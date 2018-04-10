@@ -1,5 +1,6 @@
 <html>
   <head>
+    <title>WEX market depth | WEX cтакан</title>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
     <script>
@@ -9,6 +10,7 @@
         var $pair = $('#pair');
         var $limit = $('#limit');
         var $loadBtn = $('#reload');
+        
                   
         $.ajax({
           url: 'https://wex.nz/api/3/info',
@@ -83,11 +85,15 @@
                 series: [{
                     type: 'area',
                     name: 'asks',
-                    data: asks
+                    data: asks,
+                    fillColor: '#8888FF',
+                    lineColor: '#3333FF'
                 },{
                     type: 'area',
                     name: 'bids',
-                    data: bids
+                    data: bids,
+                    fillColor: '#FF8888',
+                    lineColor: '#FF3333'
                 }]
             });
             $loadBtn.attr('disabled', false)
@@ -107,11 +113,13 @@
         <option>5000</option>
       </select>
       <button id="reload">Load</button>
+      <a href="https://en.wikipedia.org/wiki/Market_depth" target="_blank">Market depth?</a>
     </div>
     <div id="container" style="height: 92%;"></div>
     <div style="bottom: 10px; position: fixed;">
       <b>For donations:</B> BTC: 17RYvDqZKaHRZUPXdLp6UKrbyE2Cckkfss, ETH: 0xB0CAE7a8F8E5E10a736344bB25aFCd2ffA942146, BCH: qpr82cv6ss99wml694esmcmp70xtcfeyhc2pe9z8u6
     </div>
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript" >
         (function (d, w, c) {
